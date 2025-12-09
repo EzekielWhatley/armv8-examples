@@ -5,6 +5,7 @@ atomic_var: .dword 0
 .global _start
 _start:
 main:
+    // MOVK tests
     mov x0, 0
     movk x0, 0x1234, lsl 0
     mov x1, 0x1234
@@ -30,6 +31,7 @@ main:
     cmp x0, x1
     b.ne bad_exit
 
+    // MOVK combined - build 64-bit value
     mov x0, 0
     movk x0, 0x1111, lsl 0
     movk x0, 0x2222, lsl 16
@@ -39,12 +41,14 @@ main:
     cmp x0, x1
     b.ne bad_exit
 
+    // MOVK preserve - only modifies 16 bits
     mov x0, 0xFFFFFFFFFFFFFFFF
     movk x0, 0x0000, lsl 16
     mov x1, 0xFFFFFFFF0000FFFF
     cmp x0, x1
     b.ne bad_exit
 
+    // UMULH tests - unsigned multiply high
     mov x1, 100
     mov x2, 100
     umulh x0, x1, x2
@@ -63,6 +67,7 @@ main:
     cmp x0, 1
     b.ne bad_exit
 
+    // SMULH tests - signed multiply high
     mov x1, 2
     mov x2, 3
     smulh x0, x1, x2
@@ -75,6 +80,7 @@ main:
     cmp x0, 1
     b.ne bad_exit
 
+    // LDXR/STXR tests - load/store exclusive
     ldur x10, =atomic_var
     mov x1, 42
     stur x1, [x10]
@@ -82,6 +88,7 @@ main:
     cmp x2, 42
     b.ne bad_exit
 
+    // STXR success after LDXR
     ldur x10, =atomic_var
     mov x1, 100
     stur x1, [x10]
@@ -94,6 +101,7 @@ main:
     cmp x5, 200
     b.ne bad_exit
 
+    // Atomic increment pattern
     ldur x10, =atomic_var
     mov x1, 500
     stur x1, [x10]

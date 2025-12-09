@@ -57,12 +57,6 @@ Currently supported:
         sp       (stack pointer)
         xzr      (zero register, always reads as 0)
     
-    Floating Point:
-        d0-d31   (64-bit double-precision floating point registers)
-        s0-s31   (32-bit single-precision floating point registers)
-                 Note: S registers are aliased to the lower 32 bits of 
-                 corresponding D registers (s0 is lower 32 bits of d0, etc.)
-
   Instructions:
     **{s} means that 's' can be optionally added to the end of an
     instruction to make the result affect the flags**
@@ -1997,7 +1991,7 @@ and affected registers after executing each instruction.
 
 
 def repl():
-    global n_flag, z_flag, c_flag, v_flag, register_regex, fp_double_regex, fp_single_regex
+    global n_flag, z_flag, c_flag, v_flag, register_regex
     print('armsim repl. operations on memory not supported\ntype q to quit')
     instr = ''
     while (True):
@@ -2010,11 +2004,6 @@ def repl():
             # Print integer registers used
             for r in set(re.findall(register_regex, instr)):
                 print("{}: {}".format(r, reg[r]))
-            # Print floating point registers used
-            for r in set(re.findall(fp_double_regex, instr)):
-                print("{}: {}".format(r, fp_reg[r]))
-            for r in set(re.findall(fp_single_regex, instr)):
-                print("{}: {}".format(r, get_s_register(r)))
             print("Z: {} N: {} C: {} V: {}".format(z_flag, n_flag, c_flag, v_flag))
         except ValueError as e:
             print(e)
