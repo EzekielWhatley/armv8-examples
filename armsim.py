@@ -57,12 +57,6 @@ Currently supported:
         sp       (stack pointer)
         xzr      (zero register, always reads as 0)
     
-    Floating Point:
-        d0-d31   (64-bit double-precision floating point registers)
-        s0-s31   (32-bit single-precision floating point registers)
-                 Note: S registers are aliased to the lower 32 bits of 
-                 corresponding D registers (s0 is lower 32 bits of d0, etc.)
-
   Instructions:
     **{s} means that 's' can be optionally added to the end of an
     instruction to make the result affect the flags**
